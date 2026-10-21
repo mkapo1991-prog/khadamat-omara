@@ -1,0 +1,447 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style><script src="/_aistudio-iframe.js?v=6634132a"></script></head><body>
+<title>خدمات العمارة</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Reem+Kufi:wght@600;700&display=swap">
+<style>
+/* Layout: one narrow ledger column, sticky month bar on top, four-tab bar at the bottom (phone-first, RTL). */
+:root{
+  --bg:#edf3f3; --surface:#ffffff; --ink:#0f2a2c; --muted:#566d70; --line:#d3dfe0;
+  --accent:#0b5c5e; --on-accent:#ffffff;
+  --owe:#a8321d; --owe-bg:#fae5df;
+  --credit:#17588f; --credit-bg:#dfeaf6;
+  --zero:#4f6568; --zero-bg:#e6eded;
+  --bar:#d6e3e3;
+  --display:"Reem Kufi","IBM Plex Sans Arabic",system-ui,sans-serif;
+  --body:"IBM Plex Sans Arabic",system-ui,"Segoe UI",Tahoma,sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0d1a1c; --surface:#142629; --ink:#e6f0f0; --muted:#93aaad; --line:#27403f;
+    --accent:#5fc4c0; --on-accent:#06201f;
+    --owe:#f29a87; --owe-bg:#3a201b;
+    --credit:#8fc0f2; --credit-bg:#1a2d44;
+    --zero:#a3b8bb; --zero-bg:#1f3335;
+    --bar:#24393b;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0d1a1c; --surface:#142629; --ink:#e6f0f0; --muted:#93aaad; --line:#27403f;
+  --accent:#5fc4c0; --on-accent:#06201f;
+  --owe:#f29a87; --owe-bg:#3a201b;
+  --credit:#8fc0f2; --credit-bg:#1a2d44;
+  --zero:#a3b8bb; --zero-bg:#1f3335;
+  --bar:#24393b;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{
+  margin:0; background:var(--bg); color:var(--ink);
+  font:400 15px/1.6 var(--body); direction:rtl;
+  padding-left:max(16px,env(safe-area-inset-left,0px));
+  padding-right:max(16px,env(safe-area-inset-right,0px));
+  padding-block:0 calc(92px + env(safe-area-inset-bottom,0px));
+}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+.wrap{max-width:640px;margin:0 auto}
+button,input,select{font-family:var(--body)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);padding:14px 0 10px}
+.brand{display:flex;align-items:baseline;justify-content:space-between;gap:12px}
+h1{margin:0;font:700 24px/1.2 var(--display);text-wrap:balance}
+.status{font-size:12px;color:var(--muted);white-space:nowrap}
+.status.err{color:var(--owe)}
+.months{display:flex;align-items:center;gap:8px;margin-top:10px}
+.months .label{flex:1;text-align:center;font:600 17px var(--body)}
+.iconbtn{width:44px;height:44px;border-radius:8px;border:1px solid var(--line);background:var(--surface);color:var(--ink);font-size:22px;line-height:1;cursor:pointer}
+
+main{display:flex;flex-direction:column;gap:16px;padding-top:6px}
+h2{margin:0;font:700 17px var(--display)}
+.sub{margin:0;font-size:13px;color:var(--muted)}
+
+.banner{display:flex;flex-direction:column;gap:10px;background:var(--surface);border:1px dashed var(--accent);border-radius:10px;padding:12px 14px}
+.banner p{margin:0;font-size:14px}
+
+.ledger{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:2px 16px}
+.row{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:12px 0;border-bottom:1px solid var(--line)}
+.row:last-child{border-bottom:0}
+.row .k{color:var(--muted);font-size:14px}
+.row .v{font:700 22px var(--display);font-variant-numeric:tabular-nums;direction:ltr}
+.row .v small{font:500 12px var(--body);color:var(--muted);margin-inline-start:4px}
+.row.net{border-top:2px solid var(--ink)}
+.row.net .k{color:var(--ink);font-weight:600}
+.v.pos{color:var(--credit)} .v.neg{color:var(--owe)}
+
+.collect{display:flex;flex-direction:column;gap:6px}
+.collect .meta{display:flex;justify-content:space-between;font-size:13px;color:var(--muted)}
+.bar{height:8px;background:var(--bar);border-radius:99px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--accent);border-radius:99px}
+
+.tbl-wrap{overflow-x:auto;background:var(--surface);border:1px solid var(--line);border-radius:10px}
+table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}
+th{font-weight:600;font-size:12px;color:var(--muted);text-align:start;padding:10px 12px;border-bottom:1px solid var(--line);white-space:nowrap}
+td{padding:9px 12px;border-bottom:1px solid var(--line);white-space:nowrap}
+tbody tr:last-child td{border-bottom:0}
+tfoot td{border-top:2px solid var(--ink);border-bottom:0;font-weight:700}
+th.n,td.n{direction:ltr;text-align:right}
+.pill{display:inline-block;direction:rtl;border-radius:99px;padding:1px 10px;font-weight:600;font-size:13px}
+.pill.owe{background:var(--owe-bg);color:var(--owe)}
+.pill.credit{background:var(--credit-bg);color:var(--credit)}
+.pill.zero{background:var(--zero-bg);color:var(--zero)}
+
+form.card{display:grid;grid-template-columns:1fr 1fr;gap:10px;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px}
+.field{display:flex;flex-direction:column;gap:4px;min-width:0}
+.field.wide{grid-column:1/-1}
+.field label{font-size:12px;font-weight:600;color:var(--muted)}
+.field input,.field select{width:100%;min-width:0;min-height:44px;padding:0 12px;font-size:16px;background:var(--bg);color:var(--ink);border:1px solid var(--line);border-radius:8px}
+.err-msg{grid-column:1/-1;margin:0;font-size:13px;color:var(--owe)}
+.btn{min-height:44px;border:0;border-radius:8px;background:var(--accent);color:var(--on-accent);font:600 15px var(--body);padding:0 18px;cursor:pointer}
+.btn.ghost{background:transparent;color:var(--accent);border:1px solid var(--accent)}
+form.card .btn{grid-column:1/-1}
+
+.list{list-style:none;margin:0;padding:0;background:var(--surface);border:1px solid var(--line);border-radius:10px}
+.it{display:grid;grid-template-columns:48px minmax(0,1fr) auto auto;gap:10px;align-items:center;padding:10px 12px;border-bottom:1px solid var(--line)}
+.it:last-child{border-bottom:0}
+.it .d{direction:ltr;text-align:right;font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
+.it .t{min-width:0;overflow-wrap:anywhere}
+.it .t small{display:block;color:var(--muted);font-size:12px}
+.it .a{font-weight:700;font-variant-numeric:tabular-nums;direction:ltr}
+.del{min-height:36px;padding:0 10px;border:1px solid var(--line);border-radius:8px;background:transparent;color:var(--muted);font-size:13px;cursor:pointer}
+.del.armed{background:var(--owe-bg);color:var(--owe);border-color:var(--owe)}
+.empty{padding:22px 16px;text-align:center;color:var(--muted);font-size:14px}
+
+.aptrow{display:grid;grid-template-columns:minmax(0,1fr) 120px;gap:10px;padding:10px 12px;border-bottom:1px solid var(--line);align-items:end}
+.aptrow:last-child{border-bottom:0}
+
+.tabs{position:fixed;left:0;right:0;bottom:0;z-index:6;background:var(--surface);border-top:1px solid var(--line);
+  padding:6px max(8px,env(safe-area-inset-left,0px)) calc(6px + env(safe-area-inset-bottom,0px)) max(8px,env(safe-area-inset-right,0px))}
+.tabs nav{max-width:640px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:4px}
+.tab{display:flex;flex-direction:column;align-items:center;gap:2px;min-height:52px;justify-content:center;border:0;background:transparent;color:var(--muted);font-size:12px;font-weight:500;border-radius:8px;cursor:pointer}
+.tab svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.tab[aria-current="page"]{color:var(--accent);font-weight:700}
+
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(86px + env(safe-area-inset-bottom,0px));z-index:20;max-width:calc(100% - 32px);background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:8px;font-size:14px}
+.note{font-size:12px;color:var(--muted);margin:0}
+@media (prefers-reduced-motion:no-preference){.bar i{transition:width .3s ease}}
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <div class="brand"><h1>خدمات العمارة</h1><span class="status" id="status"></span></div>
+    <div class="months" id="months"></div>
+  </header>
+  <main id="app"></main>
+</div>
+<div class="tabs"><nav id="tabs" aria-label="الأقسام"></nav></div>
+<div class="toast" id="toast" hidden></div>
+
+<script>
+(function(){
+document.documentElement.lang='ar';
+document.documentElement.dir='rtl';
+
+var KEY='khadamat-omara-v1';
+var $=function(s){return document.querySelector(s)};
+var S=null, view='summary', month=curMonth(), db=null, dl=null, ref=null;
+var saving=false, dirty=false, saveTimer=null, toastTimer=null;
+
+function pad(n){return n<10?'0'+n:''+n}
+function curMonth(){var d=new Date();return d.getFullYear()+'-'+pad(d.getMonth()+1)}
+function today(){var d=new Date();return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())}
+function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,6)}
+function round2(x){return Math.round((x+Number.EPSILON)*100)/100}
+function fmt(n){n=round2(n);if(n===0)n=0;return n.toLocaleString('en-US',{maximumFractionDigits:2})}
+function esc(s){return String(s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+function monthLabel(m){var p=m.split('-');return new Date(+p[0],+p[1]-1,1).toLocaleDateString('ar-EG-u-nu-latn',{month:'long',year:'numeric'})}
+function shiftMonth(m,delta){var p=m.split('-');var d=new Date(+p[0],+p[1]-1+delta,1);return d.getFullYear()+'-'+pad(d.getMonth()+1)}
+function dayMonth(iso){var p=iso.split('-');return p[2]+'/'+p[1]}
+
+function blankApts(){var a=[];for(var i=1;i<=12;i++)a.push({id:i,name:'شقة '+i,open:0});return a}
+function demo(){
+  var m=curMonth(),d=function(n){return m+'-'+pad(n)};
+  var pays=[[1,280,2],[2,280,3],[3,280,3],[4,280,5],[5,280,6],[6,280,6],[7,280,8],[8,280,9],[9,280,11],[10,400,12],[11,100,13]];
+  return {v:1,demo:true,apts:blankApts(),
+    expenses:[
+      {id:uid()+'a',date:d(1),desc:'كهرباء السلم والمصعد',amt:960},
+      {id:uid()+'b',date:d(4),desc:'نظافة العمارة',amt:600},
+      {id:uid()+'c',date:d(10),desc:'صيانة المصعد',amt:1800}],
+    payments:pays.map(function(p,i){return {id:uid()+'p'+i,date:d(p[2]),apt:p[0],amt:p[1],note:''}})};
+}
+function valid(o){return o&&Array.isArray(o.apts)&&Array.isArray(o.expenses)&&Array.isArray(o.payments)}
+function loadLocal(){try{var o=JSON.parse(localStorage.getItem(KEY));return valid(o)?o:null}catch(e){return null}}
+
+/* ---------- saving ---------- */
+function setStatus(k){
+  var el=$('#status');if(!el)return;
+  var t={saved:'محفوظ',saving:'جارٍ الحفظ…',local:'محفوظ على هذا الجهاز فقط',error:'تعذّر الحفظ'}[k]||'';
+  el.textContent=t;el.className='status'+(k==='error'?' err':'');
+}
+function persist(){
+  try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}
+  if(!ref){setStatus('local');return}
+  dirty=true;setStatus('saving');
+  clearTimeout(saveTimer);saveTimer=setTimeout(flush,500);
+}
+function flush(){
+  if(saving){saveTimer=setTimeout(flush,300);return}
+  if(!dirty||!ref)return;
+  saving=true;dirty=false;
+  ref.set({s:JSON.stringify(S),t:Date.now()}).then(function(){
+    saving=false;
+    if(dirty){saveTimer=setTimeout(flush,100)}else setStatus('saved');
+  },function(){saving=false;setStatus('error')});
+}
+
+/* ---------- calculations ---------- */
+function calc(m){
+  var n=Math.max(1,S.apts.length),spent=0,spentUpTo=0,collected=0;
+  S.expenses.forEach(function(e){var k=e.date.slice(0,7);if(k===m)spent+=e.amt;if(k<=m)spentUpTo+=e.amt});
+  var paidM={},paidUpTo={};
+  S.payments.forEach(function(p){var k=p.date.slice(0,7);
+    if(k===m){paidM[p.apt]=(paidM[p.apt]||0)+p.amt;collected+=p.amt}
+    if(k<=m)paidUpTo[p.apt]=(paidUpTo[p.apt]||0)+p.amt});
+  var share=spent/n,shareUpTo=spentUpTo/n;
+  var rows=S.apts.map(function(a){
+    return {apt:a,share:share,paid:paidM[a.id]||0,bal:(a.open||0)+(paidUpTo[a.id]||0)-shareUpTo};
+  });
+  return {n:n,spent:spent,collected:collected,share:share,rows:rows};
+}
+function pill(bal){
+  if(bal>0.004)return '<span class="pill credit">لها '+fmt(bal)+'</span>';
+  if(bal<-0.004)return '<span class="pill owe">عليها '+fmt(-bal)+'</span>';
+  return '<span class="pill zero">مسدد</span>';
+}
+
+/* ---------- rendering ---------- */
+var ICON={
+  summary:'<svg viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>',
+  exp:'<svg viewBox="0 0 24 24"><path d="M6 3h12v18l-3-2-3 2-3-2-3 2z"/><path d="M9 8h6M9 12h6"/></svg>',
+  pay:'<svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12" rx="2"/><circle cx="12" cy="12" r="2.5"/></svg>',
+  apts:'<svg viewBox="0 0 24 24"><path d="M5 21V4h9v17M14 9h5v12M3 21h18M8 8h3M8 12h3M8 16h3"/></svg>'
+};
+var TABS=[['summary','الملخص','summary'],['exp','المصروفات','exp'],['pay','المدفوعات','pay'],['apts','الشقق','apts']];
+
+function renderTabs(){
+  $('#tabs').innerHTML=TABS.map(function(t){
+    return '<button class="tab" data-act="tab" data-v="'+t[0]+'"'+(view===t[0]?' aria-current="page"':'')+'>'+ICON[t[2]]+'<span>'+t[1]+'</span></button>';
+  }).join('');
+}
+function renderMonths(){
+  var el=$('#months');
+  if(view==='apts'){el.hidden=true;return}
+  el.hidden=false;
+  el.innerHTML='<button class="iconbtn" data-act="prev" aria-label="الشهر السابق">›</button>'+
+    '<div class="label">'+esc(monthLabel(month))+'</div>'+
+    '<button class="iconbtn" data-act="next" aria-label="الشهر التالي">‹</button>';
+}
+function banner(){
+  if(!S.demo)return '';
+  return '<div class="banner"><p>الأرقام دي تجريبية عشان تشوفي الشكل. امسحيها وابدئي بدفتر فاضي.</p>'+
+    '<button class="btn" data-act="clear">ابدأ بدفتر فاضي</button></div>';
+}
+
+function viewSummary(){
+  var c=calc(month),diff=c.collected-c.spent;
+  var pct=c.spent>0?Math.min(100,Math.round(c.collected/c.spent*100)):0;
+  var rows=c.rows.map(function(r){
+    return '<tr><td>'+esc(r.apt.name)+'</td><td class="n">'+fmt(r.share)+'</td><td class="n">'+(r.paid?fmt(r.paid):'–')+'</td><td class="n">'+pill(r.bal)+'</td></tr>';
+  }).join('');
+  var exp=dl?'<button class="btn ghost" data-act="export">تصدير ملخص الشهر (CSV)</button>':'';
+  return banner()+
+    '<section class="ledger" aria-label="ملخص الشهر">'+
+      '<div class="row"><span class="k">إجمالي المصروفات</span><span class="v">'+fmt(c.spent)+'<small>ج.م</small></span></div>'+
+      '<div class="row"><span class="k">إجمالي المحصّل</span><span class="v">'+fmt(c.collected)+'<small>ج.م</small></span></div>'+
+      '<div class="row net"><span class="k">الفرق</span><span class="v '+(diff>0.004?'pos':diff<-0.004?'neg':'')+'">'+(diff>0.004?'+':'')+fmt(diff)+'<small>ج.م</small></span></div>'+
+    '</section>'+
+    '<section class="collect"><div class="meta"><span>'+(c.spent>0?'تم تحصيل '+pct+'٪ من مصروفات الشهر':'مفيش مصروفات مسجلة في الشهر ده')+'</span><span>حصة الشقة '+fmt(c.share)+' ج.م</span></div>'+
+      '<div class="bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="'+pct+'"><i style="width:'+pct+'%"></i></div></section>'+
+    '<section><h2>حساب كل شقة</h2></section>'+
+    '<div class="tbl-wrap"><table><thead><tr><th>الشقة</th><th class="n">الحصة</th><th class="n">دفعت</th><th class="n">الرصيد</th></tr></thead><tbody>'+rows+'</tbody>'+
+      '<tfoot><tr><td>الإجمالي</td><td class="n">'+fmt(c.spent)+'</td><td class="n">'+fmt(c.collected)+'</td><td></td></tr></tfoot></table></div>'+
+    '<p class="note">الحصة = مصروفات الشهر ÷ '+c.n+'. الرصيد = كل ما دفعته الشقة حتى نهاية الشهر ناقص حصتها من المصروفات حتى نهاية الشهر. «لها» يعني دفعت زيادة، و«عليها» يعني متأخرة.</p>'+exp;
+}
+
+function defaultDate(){return month===curMonth()?today():month+'-01'}
+
+function viewExpenses(){
+  var list=S.expenses.filter(function(e){return e.date.slice(0,7)===month}).sort(function(a,b){return a.date<b.date?1:a.date>b.date?-1:0});
+  var total=list.reduce(function(s,e){return s+e.amt},0);
+  var items=list.length?list.map(function(e){
+    return '<li class="it"><span class="d">'+dayMonth(e.date)+'</span><span class="t">'+esc(e.desc)+'</span><span class="a">'+fmt(e.amt)+'</span>'+
+      '<button class="del" data-act="del" data-k="exp" data-id="'+e.id+'" aria-label="حذف '+esc(e.desc)+'">حذف</button></li>';
+  }).join(''):'<li class="empty">مفيش مصروفات في الشهر ده. سجلي أول مصروف من النموذج اللي فوق.</li>';
+  return banner()+
+    '<form class="card" id="f-exp" novalidate>'+
+      '<div class="field"><label for="e-date">تاريخ المصروف</label><input id="e-date" type="date" value="'+defaultDate()+'" required></div>'+
+      '<div class="field"><label for="e-amt">المبلغ (ج.م)</label><input id="e-amt" type="number" inputmode="decimal" step="any" min="0" placeholder="0" required></div>'+
+      '<div class="field wide"><label for="e-desc">البند</label><input id="e-desc" type="text" placeholder="مثال: فاتورة الكهرباء" required></div>'+
+      '<p class="err-msg" id="e-err" hidden></p>'+
+      '<button class="btn" type="submit">إضافة المصروف</button>'+
+    '</form>'+
+    '<section><h2>مصروفات الشهر</h2><p class="sub">الإجمالي '+fmt(total)+' ج.م · '+list.length+' بند</p></section>'+
+    '<ul class="list">'+items+'</ul>';
+}
+
+function aptName(id){var a=S.apts.filter(function(x){return x.id===id})[0];return a?a.name:'شقة '+id}
+
+function viewPayments(){
+  var list=S.payments.filter(function(p){return p.date.slice(0,7)===month}).sort(function(a,b){return a.date<b.date?1:a.date>b.date?-1:0});
+  var total=list.reduce(function(s,p){return s+p.amt},0);
+  var items=list.length?list.map(function(p){
+    return '<li class="it"><span class="d">'+dayMonth(p.date)+'</span><span class="t">'+esc(aptName(p.apt))+(p.note?'<small>'+esc(p.note)+'</small>':'')+'</span><span class="a">'+fmt(p.amt)+'</span>'+
+      '<button class="del" data-act="del" data-k="pay" data-id="'+p.id+'" aria-label="حذف دفعة '+esc(aptName(p.apt))+'">حذف</button></li>';
+  }).join(''):'<li class="empty">مفيش مدفوعات في الشهر ده. سجلي أول دفعة من النموذج اللي فوق.</li>';
+  var opts=S.apts.map(function(a){return '<option value="'+a.id+'">'+esc(a.name)+'</option>'}).join('');
+  return banner()+
+    '<form class="card" id="f-pay" novalidate>'+
+      '<div class="field"><label for="p-date">تاريخ الدفع</label><input id="p-date" type="date" value="'+defaultDate()+'" required></div>'+
+      '<div class="field"><label for="p-apt">الشقة</label><select id="p-apt">'+opts+'</select></div>'+
+      '<div class="field"><label for="p-amt">المبلغ (ج.م)</label><input id="p-amt" type="number" inputmode="decimal" step="any" min="0" placeholder="0" required></div>'+
+      '<div class="field"><label for="p-note">ملاحظة (اختياري)</label><input id="p-note" type="text" placeholder="مثال: عن شهرين"></div>'+
+      '<p class="err-msg" id="p-err" hidden></p>'+
+      '<button class="btn" type="submit">إضافة الدفعة</button>'+
+    '</form>'+
+    '<section><h2>مدفوعات الشهر</h2><p class="sub">المحصّل '+fmt(total)+' ج.م · '+list.length+' دفعة</p></section>'+
+    '<ul class="list">'+items+'</ul>';
+}
+
+function viewApts(){
+  var rows=S.apts.map(function(a){
+    return '<div class="aptrow">'+
+      '<div class="field"><label for="n-'+a.id+'">اسم الشقة '+a.id+'</label><input id="n-'+a.id+'" type="text" value="'+esc(a.name)+'" data-apt="'+a.id+'" data-f="name"></div>'+
+      '<div class="field"><label for="o-'+a.id+'">رصيد سابق</label><input id="o-'+a.id+'" type="number" inputmode="decimal" step="any" value="'+(a.open?a.open:'')+'" placeholder="0" data-apt="'+a.id+'" data-f="open"></div>'+
+    '</div>';
+  }).join('');
+  return banner()+
+    '<section><h2>الشقق</h2><p class="sub">غيّري اسم أي شقة (اسم الساكن مثلاً). الرصيد السابق هو اللي كان قبل ما تبدأي تسجلي هنا: اكتبيه بالموجب لو الشقة لها فلوس، وبالسالب لو عليها.</p></section>'+
+    '<div class="list">'+rows+'</div>';
+}
+
+function render(){
+  renderTabs();renderMonths();
+  var h=view==='summary'?viewSummary():view==='exp'?viewExpenses():view==='pay'?viewPayments():viewApts();
+  $('#app').innerHTML=h;
+}
+
+function toast(msg){
+  var t=$('#toast');t.textContent=msg;t.hidden=false;
+  clearTimeout(toastTimer);toastTimer=setTimeout(function(){t.hidden=true},2400);
+}
+
+/* ---------- actions ---------- */
+function num(v){var x=parseFloat(String(v).replace(',','.'));return isFinite(x)?x:NaN}
+function showErr(id,msg){var el=$('#'+id);if(el){el.textContent=msg;el.hidden=false}}
+function validDate(d){return /^\d{4}-\d{2}-\d{2}$/.test(d)}
+
+document.addEventListener('submit',function(ev){
+  var f=ev.target;
+  if(f.id==='f-exp'){
+    ev.preventDefault();
+    var date=$('#e-date').value,amt=num($('#e-amt').value),desc=$('#e-desc').value.trim();
+    if(!validDate(date))return showErr('e-err','اكتبي تاريخ المصروف.');
+    if(!desc)return showErr('e-err','اكتبي اسم البند.');
+    if(!(amt>0))return showErr('e-err','اكتبي مبلغ أكبر من صفر.');
+    S.expenses.push({id:uid(),date:date,desc:desc,amt:round2(amt)});
+    afterAdd(date,'تمت إضافة المصروف');
+  }else if(f.id==='f-pay'){
+    ev.preventDefault();
+    var pd=$('#p-date').value,pa=num($('#p-amt').value),apt=+$('#p-apt').value,note=$('#p-note').value.trim();
+    if(!validDate(pd))return showErr('p-err','اكتبي تاريخ الدفع.');
+    if(!(pa>0))return showErr('p-err','اكتبي مبلغ أكبر من صفر.');
+    S.payments.push({id:uid(),date:pd,apt:apt,amt:round2(pa),note:note});
+    afterAdd(pd,'تمت إضافة الدفعة');
+  }
+});
+function afterAdd(date,msg){
+  var m=date.slice(0,7);
+  if(m!==month){month=m;msg+=' في '+monthLabel(m)}
+  persist();render();toast(msg);
+}
+
+document.addEventListener('change',function(ev){
+  var el=ev.target,id=el.getAttribute&&el.getAttribute('data-apt');
+  if(!id)return;
+  var a=S.apts.filter(function(x){return String(x.id)===id})[0];if(!a)return;
+  if(el.getAttribute('data-f')==='name'){a.name=el.value.trim()||('شقة '+a.id);el.value=a.name}
+  else{var v=num(el.value);a.open=isFinite(v)?round2(v):0}
+  persist();toast('تم الحفظ');
+});
+
+document.addEventListener('click',function(ev){
+  var b=ev.target.closest&&ev.target.closest('[data-act]');if(!b)return;
+  var act=b.getAttribute('data-act');
+  if(act==='tab'){view=b.getAttribute('data-v');render();window.scrollTo(0,0)}
+  else if(act==='prev'){month=shiftMonth(month,-1);render()}
+  else if(act==='next'){month=shiftMonth(month,1);render()}
+  else if(act==='clear'){
+    S={v:1,demo:false,apts:S.apts.map(function(a){return {id:a.id,name:a.name,open:0}}),expenses:[],payments:[]};
+    persist();render();toast('الدفتر فاضي. ابدئي بتسجيل أول مصروف.');
+  }
+  else if(act==='del'){
+    if(b.getAttribute('data-armed')){
+      var k=b.getAttribute('data-k'),id=b.getAttribute('data-id');
+      if(k==='exp')S.expenses=S.expenses.filter(function(e){return e.id!==id});
+      else S.payments=S.payments.filter(function(p){return p.id!==id});
+      persist();render();toast('تم الحذف');
+    }else{
+      b.setAttribute('data-armed','1');b.textContent='تأكيد الحذف';b.classList.add('armed');
+      setTimeout(function(){if(b.isConnected&&b.getAttribute('data-armed')){b.removeAttribute('data-armed');b.textContent='حذف';b.classList.remove('armed')}},3000);
+    }
+  }
+  else if(act==='export'&&dl){
+    var c=calc(month);
+    var q=function(s){return '"'+String(s).replace(/"/g,'""')+'"'};
+    var lines=[[q('خدمات العمارة - '+monthLabel(month))],[q('الشقة'),q('حصة الشهر'),q('دفعت في الشهر'),q('الرصيد (موجب = لها، سالب = عليها)')]];
+    c.rows.forEach(function(r){lines.push([q(r.apt.name),round2(r.share),round2(r.paid),round2(r.bal)])});
+    lines.push([q('الإجمالي'),round2(c.spent),round2(c.collected),'']);
+    var csv='﻿'+lines.map(function(l){return l.join(',')}).join('\r\n');
+    dl.save({filename:'خدمات-العمارة-'+month+'.csv',data:csv}).then(function(){toast('تم حفظ الملف')},function(e){if(!e||e.code!=='declined')toast('تعذّر حفظ الملف')});
+  }
+});
+
+/* ---------- start ---------- */
+var local=loadLocal();
+S=local||demo();
+render();setStatus('local');
+
+(function(){
+  if(!window.claude||!window.claude.use)return;
+  Promise.all([window.claude.use('downloads').catch(function(){return null}),window.claude.use('db').catch(function(){return null})]).then(function(r){
+    dl=r[0];db=r[1];
+    if(dl&&view==='summary'&&!document.activeElement.closest('form'))render();
+    if(!db)return;
+    ref=db.doc('app/ledger');
+    ref.onSnapshot(function(snap){
+      if(snap.exists){
+        try{
+          var o=JSON.parse(snap.data().s);
+          if(valid(o)&&!dirty&&!saving&&!snap.metadata.hasPendingWrites&&JSON.stringify(o)!==JSON.stringify(S)){
+            S=o;try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}
+            if(!document.activeElement||!document.activeElement.closest('form'))render();
+          }
+        }catch(e){}
+        if(!dirty&&!saving)setStatus('saved');
+      }else{
+        if(local&&!S.demo){persist()}else setStatus('saved');
+      }
+    },function(){ref=null;setStatus('local')});
+  });
+})();
+})();
+</script>
+
+
+<!-- Injected Android Optimization & Back-button handler -->
+<script>
+  window.__ANDROID_APP_READY__ = true;
+  document.addEventListener('DOMContentLoaded', function() {
+    // Prevent accidental double-tap zoom
+    document.addEventListener('touchstart', function(event) {
+      if (event.touches.length > 1) {
+        // Multi-touch gestures
+      }
+    }, { passive: true });
+  });
+</script>
+</body></html>
